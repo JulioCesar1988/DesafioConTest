@@ -23,6 +23,14 @@ public class MagnetoController {
     private IadnService adnService;
 
 
+
+
+
+    @GetMapping("/test")
+    public String test() {
+        return "test -> 2022";
+    }
+
     @PostMapping("/mutant")
     public ResponseEntity<String> mutant(@RequestBody Candidate dna) {
             if (isMutant(dna.getDna())) {
