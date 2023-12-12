@@ -46,4 +46,13 @@ public class Adn implements Serializable {
     public void setAdn(String adn) {
         this.adn = adn;
     }
+
+    @Override
+    public String toString() {
+        return "Adn{" +
+                "id=" + id +
+                ", adn='" + adn + '\'' +
+                ", isMutante='" + isMutante + '\'' +
+                '}';
+    }
 }

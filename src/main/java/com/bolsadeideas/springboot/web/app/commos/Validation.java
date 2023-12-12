@@ -1,11 +1,20 @@
 package com.bolsadeideas.springboot.web.app.commos;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Validation {
 
+    private static Integer MINIMA_SECUENCIAS = 2;
+    private static final Logger logger = LoggerFactory.getLogger(Validation.class);
 
     public static char[][] createMapa(String[] dna) {
-        char[][] mapaChar = new char[dna.length][dna.length]; // Creamos el arreglo
+        char[][] mapaChar = new char[dna.length][dna.length];
         for (int i = 0; i < dna.length; i++) {
+            logger.debug("Este es un mensaje de debug");
+            logger.info("Este es un mensaje de información");
+            logger.warn("Este es un mensaje de advertencia");
+            logger.error("Este es un mensaje de error");
             //System.out.println(" Candena : " + dna[i]); // cadena a procesar
             char[] lineaLetras = dna[i].toCharArray(); // generamos array de caracteres
             // Cargamos a la matriz con los elementos que corresponda
@@ -46,11 +55,10 @@ public class Validation {
 
 
     public static Boolean isMutant(String[] dna) {
-        boolean isMutant = false;
         Integer cantidadSecuencias = 0; // con mas de 1 secuencia ya se determina como mutante
         char[][] mapaChar = createMapa(dna);
         int limite = mapaChar.length;
-        for (int i = 0; i < mapaChar[i].length - 1 && cantidadSecuencias < 2; i++) {
+        for (int i = 0; i < mapaChar[i].length - 1 && cantidadSecuencias < MINIMA_SECUENCIAS; i++) {
             for (int j = 0; j < mapaChar[i].length; j++) {
                 if (mapaChar[i][j] == 'A' || mapaChar[i][j] == 'G' || mapaChar[i][j] == 'C' || mapaChar[i][j] == 'T') {
                     //System.out.println("ELEMENTO PARA VALIDAR : " + " FILA : " + i + " COLUMNA : " + j + " DATO : " + mapaChar[i][j]);
@@ -72,13 +80,8 @@ public class Validation {
             }
 
         }
-        // Sabrás si un humano es mutante, si encuentras más de una secuencia de cuatro letras
-        // iguales, de forma oblicua, horizontal o vertical.
-        if (cantidadSecuencias == 2) {
-            isMutant = true;
-        }
 
-        return isMutant;
+        return cantidadSecuencias.equals(MINIMA_SECUENCIAS);
     }
 
 

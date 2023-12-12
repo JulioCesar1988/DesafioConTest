@@ -22,18 +22,11 @@ public class MagnetoController {
     @Autowired
     private IadnService adnService;
 
-
-
-
-
-    @GetMapping("/test")
-    public String test() {
-        return "test -> 2022";
-    }
-
     @PostMapping("/mutant")
     public ResponseEntity<String> mutant(@RequestBody Candidate dna) {
-            if (isMutant(dna.getDna())) {
+
+        // logica en el controller no va , isMutant tiene que ser boolean
+            if (Boolean.TRUE.equals(isMutant(dna.getDna()))) {
                 adnService.save(new Adn(Arrays.toString(dna.getDna()), "YES"));
                 return ResponseEntity.ok().build();
             }
@@ -50,26 +43,26 @@ public class MagnetoController {
 
         Statistics statistics = new Statistics(0, 0, (float) 0);
 
-        Integer cant_muntante = 0;
-        Integer cant_humano = 0;
+        int cantMuntante = 0;
+        int cantHumano = 0;
 
         List<Adn> listAll = adnService.findAll();
 
-        if (listAll.size() != 0) {
+        if (!listAll.isEmpty()) {
             for (int i = 0; i < listAll.size(); i++) {
                 if (listAll.get(i).isMutante().equals("YES")) {
-                    cant_muntante++;
+                    cantMuntante++;
                 } else {
-                    cant_humano++;
+                    cantHumano++;
                 }
             }
 
         }
-        statistics.setCount_human_dna(cant_humano);
-        statistics.setCount_mutant_dna(cant_muntante);
+        statistics.setCount_human_dna(cantHumano);
+        statistics.setCount_mutant_dna(cantMuntante);
 
-        if (cant_humano != 0) {
-            statistics.setRatio((float) (cant_muntante / (float) cant_humano));
+        if (cantHumano != 0) {
+            statistics.setRatio((float) (cantMuntante / (float) cantHumano));
         }
 
         return new ResponseEntity<Statistics>(statistics, HttpStatus.OK);
